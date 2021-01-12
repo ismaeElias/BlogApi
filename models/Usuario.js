@@ -7,8 +7,12 @@ class Usuario extends Model {
             email: DataTypes.STRING,
             senha : DataTypes.STRING
         }, {
-            sequelize
+            sequelize,
+            tableName : 'usuarios'
         })
+    }
+    static associate(models) {
+        this.hasMany(models.Postagem , {foreignKey: 'usuario_id', as: 'postagem'});
     }
 }
 

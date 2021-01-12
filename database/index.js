@@ -2,11 +2,15 @@ const Sequelize = require('sequelize');
 const dbconfig = require('../config/database');
 
 const Usuario = require('../models/Usuario');
-
+const Postagem = require('../models/Postagem');
 
 const connection = new Sequelize(dbconfig);
 
 Usuario.init(connection);
+Postagem.init(connection);
+
+Usuario.associate(connection.models);
+Postagem.associate(connection.models);
 
 try {
     connection.authenticate();
