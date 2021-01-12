@@ -10,6 +10,7 @@ routes.post('/usuarios', UsuarioController.store);
 
 routes.get('/usuarios/postagem', PostagemController.index);
 routes.post('/usuarios/:usuario_id/postagem', PostagemController.store);
+routes.get('/usuarios/:usuario_id/postagem', PostagemController.usuarioPostagem);
 
 
 module.exports = routes;

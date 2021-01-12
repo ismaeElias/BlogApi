@@ -27,5 +27,21 @@ module.exports = {
        } catch (error) {
             return res.status(400).json({Erro:'Não foi possivel realizar o cadastro da postagem.' + error})
        }
+    },
+    async usuarioPostagem(req, res) {
+        const { usuario_id } = req.params;
+        const usuario = await Usuario.findByPk(usuario_id);
+
+        if(!usuario){
+            return res.status(400).json({Erro : 'Usuario não encontrado'});
+        }
+
+        const postagens = await Postagem.findAll({ 
+            where : {
+                usuario_id : usuario_id
+            }
+        });
+
+        return res.status(200).json(postagens);
     }
 }
