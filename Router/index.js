@@ -8,6 +8,8 @@ const routes = express.Router();
 routes.get('/usuarios', UsuarioController.index);
 routes.post('/usuarios', UsuarioController.store);
 
-routes.get('/postagem', PostagemController.index);
+routes.get('/usuarios/postagem', PostagemController.index);
+routes.post('/usuarios/:usuario_id/postagem', PostagemController.store);
+
 
 module.exports = routes;
