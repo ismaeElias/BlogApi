@@ -1,0 +1,18 @@
+const Sequelize = require('sequelize');
+const dbconfig = require('../config/database');
+
+const Usuario = require('../models/Usuario');
+
+
+const connection = new Sequelize(dbconfig);
+
+Usuario.init(connection);
+
+try {
+    connection.authenticate();
+    console.log('Connection has been established successfully.');
+} catch(error) {
+    console.error('Unable to connect to the database:', error);
+}
+
+module.exports = connection;
