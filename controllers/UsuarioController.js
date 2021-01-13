@@ -42,9 +42,9 @@ module.exports = {
         }
 
     },
-    login(req, res) {
-        const token =req.user;
-
-        res.status(200).json(token);
+    login: (req, res) => {
+        const token = criaToken(req.user);
+        res.set('Authorization',token);
+        res.status(204).send();
     }
 }
