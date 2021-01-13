@@ -1,5 +1,18 @@
 const Usuario = require('../models/Usuario');
 const UsuarioModel = require('../models/UsuarioModel');
+const jwt = require('jsonwebtoken');
+
+function criaToken(usuario){
+    const payload = {
+        id : usuario.id
+    };
+
+    const token = jwt.sign(payload, 'teste', {
+        expiresIn : '15m'
+    });
+
+    return token;
+}
 
 module.exports = {
     async index(req, res) {
@@ -22,14 +35,16 @@ module.exports = {
             
             await usuario.adiciona();
 
-            return res.status(201).json();
-            
+            return res.status(201).json({Usuario : usuario});
+
         } catch (error) {
-            console.log(error);
+            return res.status(400).json({erro : error.message})
         }
 
-        // const usuario = await Usuario.create({nome, email, senha});
-        
-        // return res.json(usuario);
+    },
+    login(req, res) {
+        const token =req.user;
+
+        res.status(200).json(token);
     }
 }
