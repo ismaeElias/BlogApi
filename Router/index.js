@@ -9,10 +9,12 @@ const routes = express.Router();
 
 routes.get('/usuarios', UsuarioController.index);
 routes.post('/usuarios', UsuarioController.store);
+routes.delete('/usuarios/:id',passport.authenticate('bearer', {session : false}),UsuarioController.remove);
 
 routes.get('/usuarios/postagem', PostagemController.index);
-routes.post('/usuarios/:usuario_id/postagem', PostagemController.store);
+routes.post('/usuarios/:usuario_id/postagem', passport.authenticate('bearer', {session : false}),PostagemController.store);
 routes.get('/usuarios/:usuario_id/postagem', PostagemController.usuarioPostagem);
+
 routes.post('/login',auth.local, UsuarioController.login);
 
 module.exports = routes;

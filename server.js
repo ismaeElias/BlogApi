@@ -1,3 +1,4 @@
+require('dotenv').config();
 require('./database');
 require('./middleware/estrategia-auth');
 

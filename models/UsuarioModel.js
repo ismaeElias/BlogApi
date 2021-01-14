@@ -24,6 +24,19 @@ class Usuario {
         this.senha = await Usuario.GerarSenhaHash(senha);
     }
 
+    static async deleta(id){
+        
+        const usuario = await Usuario.buscaPorId(id);
+        
+        if(!usuario){
+            throw new Error('Usuario não encontrado para exclusão');
+        }
+        return await usuarioDao.destroy({
+            where : {
+                id : id
+            }
+        });
+    }
     async verificaEmail(email){
         const emailEncontrado = await usuarioDao.findOne({
             where : {

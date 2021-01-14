@@ -5,8 +5,7 @@ function criaToken(usuario){
     const payload = {
         id : usuario.id
     };
-
-    const token = jwt.sign(payload, 'teste', {
+    const token = jwt.sign(payload, process.env.CHAVE_SECRETA, {
         expiresIn : '15m'
     });
 
@@ -45,5 +44,13 @@ module.exports = {
         const token = criaToken(req.user);
         res.set('Authorization',token);
         res.status(204).send();
+    }, 
+
+    remove : async (req, res) => {
+        const {id} = req.params;
+
+        await UsuarioModel.deleta(id);
+        
+        res.status(200).json({message : 'Usuário excluido'});
     }
 }

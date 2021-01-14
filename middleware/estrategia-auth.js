@@ -1,9 +1,12 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const Usuario = require('../models/UsuarioModel');
+const BearerStrategy = require('passport-http-bearer').Strategy;
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
- function verificaUsuario(usuario){
+const Usuario = require('../models/UsuarioModel');
+
+function verificaUsuario(usuario){
     if(!usuario){
         throw new Error('Email/senha invalido ou não está cadastrado na base de dados!');
     }
@@ -34,3 +37,17 @@ passport.use( new LocalStrategy({
         }
     } 
 ));
+
+passport.use( new BearerStrategy(
+    async (token,done) => {
+        try {
+            const payload = jwt.verify(token,process.env.CHAVE_SECRETA);
+            const usuario = await Usuario.buscaPorId(payload.id);
+
+            done(null, usuario);
+        } catch (error) {
+            done(error);
+        }
+    }
+));
+
