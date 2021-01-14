@@ -1,4 +1,3 @@
-const Usuario = require('../models/Usuario');
 const UsuarioModel = require('../models/UsuarioModel');
 const jwt = require('jsonwebtoken');
 
@@ -16,7 +15,7 @@ function criaToken(usuario){
 
 module.exports = {
     async index(req, res) {
-        const usuarios = await Usuario.findAll();
+        const usuarios = await UsuarioModel.lista();
 
         return res.json(usuarios);
     },

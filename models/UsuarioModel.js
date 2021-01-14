@@ -1,6 +1,7 @@
 const usuarioDao = require('./Usuario');
 const bcrypt = require('bcrypt');
 const ErrorUsuario = require('../utils/Validations/Usuario');
+
 class Usuario {
     constructor(usuario){
         this.id = usuario.id;
@@ -50,6 +51,22 @@ class Usuario {
         }
 
         return new Usuario(usuario);
+    }
+
+    static lista(){
+       const usuarios =  usuarioDao.findAll();
+
+       return usuarios;
+    }
+
+    static async buscaPorId(id){
+        const usuario = usuarioDao.findOne({
+            where : {
+                id : id
+            }
+        });
+
+        return usuario;
     }
 }
 

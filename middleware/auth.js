@@ -5,7 +5,7 @@ module.exports = {
         passport.authenticate(
             'local', 
             { session : false},
-            (error, usuario, info) => {
+            (error, usuario, info) =>  {
                 if(error){
                     return res.status(500).json({error : error.message})
                 }
