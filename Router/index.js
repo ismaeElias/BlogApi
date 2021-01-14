@@ -14,6 +14,7 @@ routes.delete('/usuarios/:id',passport.authenticate('bearer', {session : false})
 routes.get('/usuarios/postagem', PostagemController.index);
 routes.post('/usuarios/:usuario_id/postagem', passport.authenticate('bearer', {session : false}),PostagemController.store);
 routes.get('/usuarios/:usuario_id/postagem', PostagemController.usuarioPostagem);
+routes.delete('/usuarios/:usuario_id/postagem/:id',passport.authenticate('bearer', {session : false}), PostagemController.remove);
 
 routes.post('/login',auth.local, UsuarioController.login);
 

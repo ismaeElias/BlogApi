@@ -13,13 +13,13 @@ function criaToken(usuario){
 }
 
 module.exports = {
-    async index(req, res) {
+     index : async (req, res) => {
         const usuarios = await UsuarioModel.lista();
 
         return res.json(usuarios);
     },
 
-    async store(req, res) {
+     store : async (req, res) => {
         const { nome, email, senha} = req.body;
         
         try {
@@ -40,7 +40,8 @@ module.exports = {
         }
 
     },
-    login: (req, res) => {
+
+    login : (req, res) => {
         const token = criaToken(req.user);
         res.set('Authorization',token);
         res.status(204).send();
@@ -48,9 +49,11 @@ module.exports = {
 
     remove : async (req, res) => {
         const {id} = req.params;
-
-        await UsuarioModel.deleta(id);
-        
-        res.status(200).json({message : 'Usuário excluido'});
+        try {
+            await UsuarioModel.deleta(id);
+            res.status(200).json({message : 'Usuário excluido'});
+        } catch (error) {
+            res.status(400).json({erro : 'Não foi possível excluir o usuário: ' + error})
+        }
     }
 }
