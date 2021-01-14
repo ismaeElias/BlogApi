@@ -22,7 +22,6 @@ module.exports = {
       },
       conteudo : {
         allowNull : false,
-        unique : true,
         type : Sequelize.STRING,
       },
       created_at: {

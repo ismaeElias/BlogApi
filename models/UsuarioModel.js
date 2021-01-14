@@ -37,6 +37,20 @@ class Usuario {
         const custoHash = 12;
         return bcrypt.hash(senha,custoHash);
     }
+
+    static async BuscarPorEmail(email){
+        const usuario = await usuarioDao.findOne({
+            where : {
+                email : email
+            }
+        });
+
+        if(!usuario){
+            return null;
+        }
+
+        return new Usuario(usuario);
+    }
 }
 
 module.exports = Usuario;

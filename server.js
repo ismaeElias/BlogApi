@@ -1,9 +1,10 @@
 require('./database');
+require('./middleware/estrategia-auth');
 
 const express = require('express');
 const app = express();
 const routes = require('./Router');
-const EstrategiaAuth = require('./middleware/estrategia-auth');
+
 
 app.use(express.json());
 app.use(routes);

@@ -16,16 +16,17 @@ module.exports = {
         if(!usuario){
             return res.status(400).json({Erro : 'Usuario não encontrado!'})
         }
-            
         try { 
+            
             const postagem = await Postagem.create({
-                usuario_id,
                 titulo,
-                conteudo
+                conteudo,
+                usuario_id
             });
-        return res.json(postagem);
+           
+            return res.json(postagem);
        } catch (error) {
-            return res.status(400).json({Erro:'Não foi possivel realizar o cadastro da postagem.' + error})
+            console.log(error);
        }
     },
     async usuarioPostagem(req, res) {
