@@ -1,5 +1,5 @@
 const express = require('express');
-const passport = require('passport');
+const cors = require('cors');
 
 const UsuarioController = require('../controllers/UsuarioController');
 const PostagemController = require('../controllers/PostagemController');
@@ -7,7 +7,7 @@ const auth = require('../middleware/auth');
 
 const routes = express.Router();
 
-routes.get('/usuarios', UsuarioController.index);
+routes.get('/usuarios', cors(),UsuarioController.index);
 routes.post('/usuarios', UsuarioController.store);
 routes.delete('/usuarios/:id', auth.bearer ,UsuarioController.remove);
 
