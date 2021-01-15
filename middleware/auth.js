@@ -1,4 +1,21 @@
 const passport = require('passport');
+const Usuario = require('../models/UsuarioModel');
+const alloListRefreshToken = require('../redis/allowlistRefreshToken');
+
+async function verificaRefreshToken(refreshToken){
+    if(!refreshToken){
+        throw new Error('Refresh token não enviado!');
+    }
+    const id  = await alloListRefreshToken.buscaValor(refreshToken);
+    if(!id) {
+        throw new Error('Refresh token é invalido!');
+    }
+    return id;
+}
+
+async function invalidaRefreshToken(refreshToken) {
+    await alloListRefreshToken.deleta(refreshToken);
+}
 
 module.exports = {
     local : (req, res, next) => {
@@ -44,5 +61,18 @@ module.exports = {
                 return next();
             }
         )(req, res, next);
+    },
+
+    refresh : async (req,res, next) => {
+        try {
+            const { refreshToken } = req.body;
+            const id = await verificaRefreshToken(refreshToken);
+            await invalidaRefreshToken(refreshToken);
+            req.user = await Usuario.buscaPorId(id);
+            return next();
+        } catch (error) {
+            return res.status(401).json({erro : error.message});
+        }
+        
     }
 }
