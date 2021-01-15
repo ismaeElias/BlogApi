@@ -1,5 +1,6 @@
 const UsuarioModel = require('../models/UsuarioModel');
 const jwt = require('jsonwebtoken');
+const blacklist = require('../redis/manipularBlacklist');
 
 function criaToken(usuario){
     const payload = {
@@ -46,6 +47,17 @@ module.exports = {
         res.set('Authorization',token);
         res.status(204).send();
     }, 
+
+    logout : async (req, res) => {
+        try {
+            const token = req.token;
+            await blacklist.adiciona(token);
+    
+            res.status(204).send(); 
+        } catch (error) {
+            res.status(500).json({erro : error.message});
+        }
+    },
 
     remove : async (req, res) => {
         const {id} = req.params;

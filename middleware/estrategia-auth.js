@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const Usuario = require('../models/UsuarioModel');
+const blacklist = require('../redis/manipularBlacklist');
 
 function verificaUsuario(usuario){
     if(!usuario){
@@ -17,6 +18,13 @@ async function verificaSenha(senha, senhaHash){
 
     if(!senhaValida){
         throw new Error('Senha invalida!');
+    }
+}
+
+async function verificaTokenBlacklist(token) {
+    const tokenNaBlackListawait = await blacklist.contemToken(token);
+    if(tokenNaBlackListawait){
+        throw new jwt.JsonWebTokenError('Token invalido por logout');
     }
 }
 
@@ -41,10 +49,11 @@ passport.use( new LocalStrategy({
 passport.use( new BearerStrategy(
     async (token,done) => {
         try {
+            await verificaTokenBlacklist(token);
             const payload = jwt.verify(token,process.env.CHAVE_SECRETA);
             const usuario = await Usuario.buscaPorId(payload.id);
 
-            done(null, usuario);
+            done(null, usuario, {token : token});
         } catch (error) {
             done(error);
         }

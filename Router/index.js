@@ -17,5 +17,6 @@ routes.get('/usuarios/:usuario_id/postagem', PostagemController.usuarioPostagem)
 routes.delete('/usuarios/:usuario_id/postagem/:id',auth.bearer, PostagemController.remove);
 
 routes.post('/login',auth.local, UsuarioController.login);
+routes.get('/usuarios/logout', auth.bearer ,UsuarioController.logout);
 
 module.exports = routes;

@@ -1,6 +1,7 @@
 require('dotenv').config();
 require('./database');
 require('./middleware/estrategia-auth');
+require('./redis/blacklist');
 
 const express = require('express');
 const app = express();
