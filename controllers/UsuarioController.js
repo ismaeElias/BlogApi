@@ -31,7 +31,12 @@ module.exports = {
 
         return res.json(usuarios);
     },
+     findOne : async (req , res ) => {
+         const { id } = req.params;
+         const usuario = await UsuarioModel.buscaPorId(id);
 
+         return res.status(201).json(usuario);
+     },
      store : async (req, res) => {
         const { nome, email, senha} = req.body;
         
@@ -60,7 +65,7 @@ module.exports = {
             const refreshToken = await criaTokenOpaco(req.user);
 
             res.set('Authorization',acessToken);
-            res.status(200).json({refreshToken});
+            res.status(200).json({refreshToken : refreshToken, id : req.user.id});
         } catch (error) {
             res.status(500).json({ erro : error.message});
         }
